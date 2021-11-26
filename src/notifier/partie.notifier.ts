@@ -2,6 +2,12 @@ const amqplib = require("amqplib");
 
 const MAIL_QUEUE_TITLE = "transactions";
 
+
+
+const processTransaction = (msg: { content: { toString: () => any; }; }) => {
+    console.log(` [${MAIL_QUEUE_TITLE}] Received '%s'`, msg.content.toString());
+}
+
 const start = () => {
     console.log('Lancement Notifier Parti')
     amqplib.connect('amqp://localhost').then((conn: { close: () => void; createChannel: () => Promise<any>; }) => {
@@ -17,11 +23,6 @@ const start = () => {
             return ok.then((_consumeOk: any) => {
                 console.log(` [${MAIL_QUEUE_TITLE}] Waiting for messages. To exit press CTRL+C`);
             });
-
-
-            const processTransaction = (msg: { content: { toString: () => any; }; }) => {
-                console.log(` [${MAIL_QUEUE_TITLE}] Received '%s'`, msg.content.toString());
-            }
         });
     }).catch(console.warn);
 }
