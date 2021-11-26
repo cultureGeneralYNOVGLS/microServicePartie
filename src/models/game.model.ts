@@ -11,7 +11,7 @@ export interface GameModel {
     category:CategoryModel;
     difficulty:number;
     progression_questions:number;
-    number_questions:number;
+    numberQuestions:number;
     idQuestionProgression:ObjectId;
     answer : string[];
     questions : QuestionModel[];

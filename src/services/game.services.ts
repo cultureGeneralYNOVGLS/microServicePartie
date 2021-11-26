@@ -15,10 +15,10 @@ export class GameService {
     private categoriesDAO: CategoryDAO = new CategoryDAO()
     private checkForValidMongoDbID = new RegExp("^[0-9a-fA-F]{24}$");
 
-    async createUser(idUser: string, difficulty: number, number_questions: number, idCategory: string,name:string): Promise<GameModel> {
+    async createUser(idUser: string, difficulty: number, numberQuestions: number, idCategory: string,name:string): Promise<GameModel> {
 
 
-        if (this.validCreateBody(idUser, difficulty, number_questions, idCategory)) {
+        if (this.validCreateBody(idUser, difficulty, numberQuestions, idCategory)) {
 
             if (this.checkForValidMongoDbID.test(idCategory)) {
                 let idCategoryObjectID = new ObjectID(idCategory);
@@ -26,7 +26,7 @@ export class GameService {
                 let questions: QuestionModel[] = [];
 
                 const categorie: CategoryModel = await this.categoriesDAO.getByID(idCategoryObjectID);
-                questions = await this.categoriesDAO.getQuestionsByIdCategory(idCategoryObjectID, number_questions)
+                questions = await this.categoriesDAO.getQuestionsByIdCategory(idCategoryObjectID, numberQuestions)
 
 
                 let game: GameModel = {
@@ -36,7 +36,7 @@ export class GameService {
                     category: categorie,
                     difficulty: difficulty,
                     progression_questions: 1,
-                    number_questions: number_questions,
+                    numberQuestions: numberQuestions,
                     score: 0,
                     idQuestionProgression: questions[0]._id,
                     questions: questions,
@@ -106,13 +106,13 @@ export class GameService {
 
                 if (question) {
 
-                    if (question.good_answer === answer) {
+                    if (question.goodAnswer === answer) {
                         game.score++;
                     }
                     game.progression_questions++;
                     game.answer.push(answer);
 
-                    if (game.progression_questions <= game.number_questions) {
+                    if (game.progression_questions <= game.numberQuestions) {
                         game.idQuestionProgression = game.questions[game.progression_questions - 1]._id;
                         game.status = 'in progress';
 
@@ -138,9 +138,9 @@ export class GameService {
         }
     }
 
-    validCreateBody(idUser: string, difficulty: number, number_questions: number, idCategory: string): boolean {
+    validCreateBody(idUser: string, difficulty: number, numberQuestions: number, idCategory: string): boolean {
 
-        if (idUser && difficulty && number_questions && idCategory) {
+        if (idUser && difficulty && numberQuestions && idCategory) {
             return true;
         }
         else {
@@ -149,7 +149,7 @@ export class GameService {
     }
 
     validGame(game: GameModel) {
-        return game && game.difficulty && game.category && game.idQuestionProgression && game.idUser && game.number_questions && game.progression_questions && game.questions
+        return game && game.difficulty && game.category && game.idQuestionProgression && game.idUser && game.numberQuestions && game.progression_questions && game.questions
     }
 
 

@@ -11,10 +11,10 @@ gameRouter.get('/:gameID', async (request, response) => {
 })
 
 gameRouter.post('/', (request, response) => {
-    let body: { idUser: string, difficulty: number, number_questions: number, idCategory: string, name: string } = {
+    let body: { idUser: string, difficulty: number, numberQuestions: number, idCategory: string, name: string } = {
         ...request.body
     };
-    gameService.createUser(body.idUser, body.difficulty, body.number_questions, body.idCategory, body.name).then((game: GameModel) => {
+    gameService.createUser(body.idUser, body.difficulty, body.numberQuestions, body.idCategory, body.name).then((game: GameModel) => {
         response.json(game)
     });
 })
