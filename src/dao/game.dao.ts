@@ -9,7 +9,7 @@ import { ObjectID } from 'bson';
 
 
 export class GameDAO {
-
+    
     db: mongoDB.Db
     mongoUtils = new MongoUtils();
     collectionCategory = 'category';
@@ -24,22 +24,26 @@ export class GameDAO {
         });
     }
 
-    create(idUser : string, difficulty : number,number_questions:number,idCategory : ObjectID, idQuestion : ObjectID) : GameModel {
-        
-        let game : GameModel = {
-            _id: new mongoDB.ObjectId(),
-            idUser: idUser,
-            idCategory: idCategory,
-            difficulty: difficulty,
-            progression_questions: 1,
-            number_questions: number_questions,
-            score: 0,
-            idQuestion: idQuestion
-        }
-
+    create(game:GameModel) : GameModel {
         this.db.collection('game').insertOne(game);
-        
         return game;
+    }
+    update(game: GameModel) {
+        this.db.collection('game').updateOne({_id:game._id},{$set:game});
+        return game;
+    }
+
+    async getById(gameID : ObjectID) : Promise<GameModel> {
+        const games = (await this.db.collection(this.collectionGame).find({_id:gameID}).toArray()) as GameModel[];
+        return games[0];
+    }
+    async getByUserId(idUser: string): Promise<GameModel[]> {
+        const games = (await this.db.collection(this.collectionGame).find({idUser:idUser}).toArray()) as GameModel[];
+        return games;
+    }
+    async getByUserCategory(idCategory: ObjectID): Promise<GameModel[]> {
+        const games = (await this.db.collection(this.collectionGame).find({"category._id":idCategory}).toArray()) as GameModel[];
+        return games;
     }
 
 

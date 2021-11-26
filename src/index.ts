@@ -8,7 +8,7 @@ import cartsRouter from './routes/carts.router';
 */
 import agentPartie from './routes/partie.agent.router';
 import categorieRouter from './routes/category.router';
-import gameRouter from './routes/category.router';
+import gameRouter from './routes/game.router';
 
 const app = express();
 const port = 7510; // default port to listen
@@ -23,6 +23,13 @@ app.use(express.json())
 app.use('/agent/partie',agentPartie)
 app.use('/category',categorieRouter)
 app.use('/game',gameRouter)
+
+
+
+app.get('/getkey', async (request, response) => {
+    response.sendStatus(200);
+})
+
 /*
 
 app.use('/api/users', usersRouter)

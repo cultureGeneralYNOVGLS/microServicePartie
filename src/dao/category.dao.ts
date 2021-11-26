@@ -9,7 +9,6 @@ const faker = require('faker');
 
 
 export class CategoryDAO {
-
     db: mongoDB.Db
     mongoUtils = new MongoUtils();
     collectionCategory = 'category';
@@ -29,6 +28,18 @@ export class CategoryDAO {
         const categories = (await this.db.collection(this.collectionCategory).find({}).toArray()) as CategoryModel[];
         return categories;
     }
+    async getByID(idCategoryObjectID: mongoDB.ObjectId): Promise<CategoryModel> {
+        const games = (await this.db.collection(this.collectionCategory).find({_id:idCategoryObjectID}).toArray()) as CategoryModel[];
+        return games[0];
+    }
+    async getQuestionsByIdCategory(idCategory: mongoDB.ObjectId, number_questions : number): Promise<QuestionModel[]> {
+        const questions = (await this.db.collection(this.collectionQuestion).find({idCategory:idCategory}).toArray()) as QuestionModel[];
+        let questionsShuffle = this.shuffleArray(questions);
+        const slicedQuestions = questionsShuffle.slice(0, number_questions);
+
+        return slicedQuestions;
+    }
+
 
     async setupCategories() {
         await this.db.collection(this.collectionCategory).deleteMany({});

@@ -1,12 +1,18 @@
 import { ObjectId } from "bson";
+import { CategoryModel } from "./category.model";
+import { QuestionModel } from "./question.model";
 
 export interface GameModel {
     _id: ObjectId;
     idUser:string;
-    idCategory:ObjectId;
+    name:string
+    status: string;
+    score:number;
+    category:CategoryModel;
     difficulty:number;
     progression_questions:number;
     number_questions:number;
-    score:number;
-    idQuestion:ObjectId;
+    idQuestionProgression:ObjectId;
+    answer : string[];
+    questions : QuestionModel[];
 }
