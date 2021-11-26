@@ -6,7 +6,10 @@ import booksRouter from './routes/books.router';
 import commentsRouter from './routes/comments.router';
 import cartsRouter from './routes/carts.router';
 */
-import agentPartie from './routes/partie.router';
+import agentPartie from './routes/partie.agent.router';
+import categorieRouter from './routes/category.router';
+import gameRouter from './routes/category.router';
+
 const app = express();
 const port = 7510; // default port to listen
 const dotenv = require('dotenv')
@@ -18,6 +21,8 @@ dotenv.config()
 app.use(express.json())
 
 app.use('/agent/partie',agentPartie)
+app.use('/category',categorieRouter)
+app.use('/game',gameRouter)
 /*
 
 app.use('/api/users', usersRouter)

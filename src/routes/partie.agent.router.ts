@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { PartieService } from '../services/partie.services';
+import { PartieService } from '../services/partie.agent.services';
 
 const notifier = require('../notifier/partie.notifier')
 notifier();
