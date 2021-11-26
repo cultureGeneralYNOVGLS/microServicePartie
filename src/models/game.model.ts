@@ -10,7 +10,7 @@ export interface GameModel {
     score:number;
     category:CategoryModel;
     difficulty:number;
-    progression_questions:number;
+    progressionQuestions:number;
     numberQuestions:number;
     idQuestionProgression:ObjectId;
     answer : string[];

@@ -15,7 +15,7 @@ export class GameService {
     private categoriesDAO: CategoryDAO = new CategoryDAO()
     private checkForValidMongoDbID = new RegExp("^[0-9a-fA-F]{24}$");
 
-    async createUser(idUser: string, difficulty: number, numberQuestions: number, idCategory: string,name:string): Promise<GameModel> {
+    async createUser(idUser: string, difficulty: number, numberQuestions: number, idCategory: string,name:string): Promise<GameModel|any> {
 
 
         if (this.validCreateBody(idUser, difficulty, numberQuestions, idCategory)) {
@@ -35,7 +35,7 @@ export class GameService {
                     name:name || faker.lorem.word(),
                     category: categorie,
                     difficulty: difficulty,
-                    progression_questions: 1,
+                    progressionQuestions: 1,
                     numberQuestions: numberQuestions,
                     score: 0,
                     idQuestionProgression: questions[0]._id,
@@ -49,16 +49,16 @@ export class GameService {
                     return game;
                 }
                 else {
-                    return null;
+                    return {error:'Game Not Valid'};
                 }
             }
             else {
-                return null;
+                return {error:'idCategory Not Valid'};
             }
 
         }
         else {
-            return null;
+            return {error:'Body Not Valid'};
         }
     }
 
@@ -67,7 +67,7 @@ export class GameService {
         if (this.checkForValidMongoDbID.test(gameID)) {
             let game: GameModel = await this.gameDAO.getById(new ObjectID(gameID));
 
-            if (game.progression_questions === null) {
+            if (game.progressionQuestions === null) {
                 return { message: 'Finish', game: game };
             }
             else {
@@ -98,29 +98,28 @@ export class GameService {
         if (this.checkForValidMongoDbID.test(gameID)) {
             let game = await this.gameDAO.getById(new ObjectID(gameID));
 
-            if (game.progression_questions === null) {
+            if (game.progressionQuestions === null) {
                 return { message: 'Finish', game: game };
             }
             else {
                 const question = game.questions.find(quest => quest._id.equals(game.idQuestionProgression));
 
                 if (question) {
-
                     if (question.goodAnswer === answer) {
                         game.score++;
                     }
-                    game.progression_questions++;
+                    game.progressionQuestions++;
                     game.answer.push(answer);
 
-                    if (game.progression_questions <= game.numberQuestions) {
-                        game.idQuestionProgression = game.questions[game.progression_questions - 1]._id;
+                    if (game.progressionQuestions <= game.numberQuestions) {
+                        game.idQuestionProgression = game.questions[game.progressionQuestions - 1]._id;
                         game.status = 'in progress';
 
                         return this.gameDAO.update(game);
                     }
                     else {
                         game.idQuestionProgression = null;
-                        game.progression_questions = null;
+                        game.progressionQuestions = null;
                         game.status = 'finish';
 
                         return { message: 'Finish', game: this.gameDAO.update(game) };
@@ -139,7 +138,6 @@ export class GameService {
     }
 
     validCreateBody(idUser: string, difficulty: number, numberQuestions: number, idCategory: string): boolean {
-
         if (idUser && difficulty && numberQuestions && idCategory) {
             return true;
         }
@@ -149,7 +147,7 @@ export class GameService {
     }
 
     validGame(game: GameModel) {
-        return game && game.difficulty && game.category && game.idQuestionProgression && game.idUser && game.numberQuestions && game.progression_questions && game.questions
+        return game && game.difficulty && game.category && game.idQuestionProgression && game.idUser && game.numberQuestions && game.progressionQuestions && game.questions
     }
 
 

@@ -13,12 +13,14 @@ import gameRouter from './routes/game.router';
 const app = express();
 const port = 7510; // default port to listen
 const dotenv = require('dotenv')
+var cors = require('cors')
 
 
 dotenv.config()
 
 // middleware used to parse incoming requests with JSON payloads
 app.use(express.json())
+app.use(cors())
 
 app.use('/agent/partie',agentPartie)
 app.use('/category',categorieRouter)
