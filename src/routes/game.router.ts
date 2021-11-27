@@ -22,6 +22,9 @@ gameRouter.post('/', (request, response) => {
 gameRouter.patch('/:gameID', async (request, response) => {
     response.json(await gameService.playGame(request.params.gameID, request.body.answer));
 })
+gameRouter.delete('/:gameID', async (request, response) => {
+    response.sendStatus(await gameService.deleteGame(request.params.gameID));
+})
 
 gameRouter.get('/user/:idUser', async (request, response) => {
     response.json(await gameService.getGamesOfUser(request.params.idUser));

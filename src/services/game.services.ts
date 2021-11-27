@@ -68,7 +68,7 @@ export class GameService {
             let game: GameModel = await this.gameDAO.getById(new ObjectID(gameID));
 
             if (game.progressionQuestions === null) {
-                return { message: 'Finish', game: game };
+                return game;
             }
             else {
                 return game;
@@ -99,7 +99,7 @@ export class GameService {
             let game = await this.gameDAO.getById(new ObjectID(gameID));
 
             if (game.progressionQuestions === null) {
-                return { message: 'Finish', game: game };
+                return game;
             }
             else {
                 const question = game.questions.find(quest => quest._id.equals(game.idQuestionProgression));
@@ -122,7 +122,7 @@ export class GameService {
                         game.progressionQuestions = null;
                         game.status = 'finish';
 
-                        return { message: 'Finish', game: this.gameDAO.update(game) };
+                        return this.gameDAO.update(game);
                     }
                 }
                 else {
@@ -136,7 +136,22 @@ export class GameService {
             return null;
         }
     }
+    async deleteGame(gameID: string) : Promise<number> {
 
+        if (this.checkForValidMongoDbID.test(gameID)) {
+            let game = await this.gameDAO.getById(new ObjectID(gameID));
+            if (game) {
+                this.gameDAO.delete(game);
+                return 200;
+            }
+            else {
+                return 404;
+            }
+        }
+        else {
+            return 500;
+        }
+    }
     validCreateBody(idUser: string, difficulty: number, numberQuestions: number, idCategory: string): boolean {
         if (idUser && difficulty && numberQuestions && idCategory) {
             return true;

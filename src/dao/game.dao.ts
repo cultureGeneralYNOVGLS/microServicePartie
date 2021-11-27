@@ -25,12 +25,15 @@ export class GameDAO {
     }
 
     create(game:GameModel) : GameModel {
-        this.db.collection('game').insertOne(game);
+        this.db.collection(this.collectionGame).insertOne(game);
         return game;
     }
     update(game: GameModel) {
-        this.db.collection('game').updateOne({_id:game._id},{$set:game});
+        this.db.collection(this.collectionGame).updateOne({_id:game._id},{$set:game});
         return game;
+    }
+    delete(game: GameModel) {
+        this.db.collection(this.collectionGame).deleteOne({_id:game._id});
     }
 
     async getById(gameID : ObjectID) : Promise<GameModel> {
@@ -38,7 +41,7 @@ export class GameDAO {
         return games[0];
     }
     async getByUserId(idUser: string): Promise<GameModel[]> {
-        const games = (await this.db.collection(this.collectionGame).find({idUser:idUser}).toArray()) as GameModel[];
+        const games = (await this.db.collection(this.collectionGame).find({idUser:idUser}).sort({_id:-1}).toArray()) as GameModel[];
         return games;
     }
     async getByUserCategory(idCategory: ObjectID): Promise<GameModel[]> {
