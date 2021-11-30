@@ -10,23 +10,23 @@ export class PartieService {
         (idUser: string, difficulty: number, numberQuestions: number, idCategory: string, name: string): Promise<any> {
 
 
-        let promise = new Promise((resolve, reject) => {
+        const promise = new Promise((resolve, reject) => {
             amqplib.connect('amqp://localhost').then((conn: { createChannel: () => Promise<any>; close: () => void; }) => {
                 return conn.createChannel().then((ch: { assertQueue: (arg0: string, arg1: { durable: boolean; }) => any; sendToQueue: (arg0: string, arg1: Buffer) => void; close: () => any; }) => {
                     const q = 'createGame';
                     const game = {
-                        idUser,
-                        difficulty,
-                        numberQuestions,
-                        idCategory,
-                        name,
+                        idUser: idUser,
+                        difficulty: difficulty,
+                        numberQuestions: numberQuestions,
+                        idCategory: idCategory,
+                        name: name,
                         _id: new ObjectId()
                     }
 
                     const ok = ch.assertQueue(q, { durable: false });
 
                     return ok.then((_qok: any) => {
-                        
+
                         ch.sendToQueue(q, Buffer.from(JSON.stringify(game)));
                         console.log(" [x] Sent '%s'", JSON.stringify(game));
 
@@ -38,11 +38,18 @@ export class PartieService {
 
                     conn.createChannel().then((ch) => {
 
-                        ch.consume(CREATED_QUEUE_TITLE, (msg: { content: { toString: () => any; }; }) => {
-                            resolve(JSON.parse(msg.content.toString()));
-                        }, {
-                            noAck: true
+
+                        let ok = ch.assertQueue(CREATED_QUEUE_TITLE, { durable: false });
+
+                        ok = ok.then((_qok: any) => {
+                            ch.consume(CREATED_QUEUE_TITLE, (msg: { content: { toString: () => any; }; }) => {
+                                resolve(JSON.parse(msg.content.toString()));
+                                conn.close();
+                            }, {
+                                noAck: true
+                            });
                         });
+
                     });
                 });
             }).catch(console.warn);

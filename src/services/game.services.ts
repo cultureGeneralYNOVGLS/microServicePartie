@@ -22,15 +22,15 @@ export class GameService {
 
             if (this.checkForValidMongoDbID.test(idCategory)) {
                 const idCategoryObjectID = new ObjectID(idCategory);
-
+                
                 let questions: QuestionModel[] = [];
-
                 const categorie: CategoryModel = await this.categoriesDAO.getByID(idCategoryObjectID);
+
                 questions = await this.categoriesDAO.getQuestionsByIdCategory(idCategoryObjectID, numberQuestions)
 
 
                 const game: GameModel = {
-                    _id,
+                    _id: _id,
                     idUser,
                     name:name || faker.lorem.word(),
                     category: categorie,

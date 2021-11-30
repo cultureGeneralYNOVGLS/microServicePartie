@@ -4,16 +4,16 @@ const MAIL_QUEUE_TITLE = "createGame";
 const CREATED_QUEUE_TITLE = "createdGame";
 import { GameModel } from '../models/game.model';
 import { GameService } from '../services/game.services';
-
+import { ObjectId } from "bson";
 const gameService = new GameService();
 
 
 const processTransaction = (msg: { content: { toString: () => any; }; }) => {
     console.log(` [${MAIL_QUEUE_TITLE}] Received '%s'`, msg.content.toString());
     const gameP = JSON.parse(msg.content.toString());
-    gameService.createGame(gameP.idUser, gameP.difficulty, gameP.numberQuestions, gameP.idCategory, gameP.name, gameP._id).then((game: GameModel) => {
+    
+    gameService.createGame(gameP.idUser, gameP.difficulty, gameP.numberQuestions, gameP.idCategory, gameP.name, new ObjectId(gameP._id)).then((game: GameModel) => {
         // Autre send RabbitmQ
-        console.log('Send Game created in now')
         amqplib.connect('amqp://localhost').then((conn: { createChannel: () => Promise<any>; close: () => void; }) => {
             return conn.createChannel().then((ch: { assertQueue: (arg0: string, arg1: { durable: boolean; }) => any; sendToQueue: (arg0: string, arg1: Buffer) => void; close: () => any; }) => {
                 const q = CREATED_QUEUE_TITLE;
