@@ -13,7 +13,7 @@ const processTransaction = (msg: { content: { toString: () => any; }; }) => {
     const gameP = JSON.parse(msg.content.toString());
     gameService.createGame(gameP.idUser, gameP.difficulty, gameP.numberQuestions, gameP.idCategory, gameP.name, gameP._id).then((game: GameModel) => {
         // Autre send RabbitmQ
-        console.log('Send Game Service')
+        console.log('Send Game created in now')
         amqplib.connect('amqp://localhost').then((conn: { createChannel: () => Promise<any>; close: () => void; }) => {
             return conn.createChannel().then((ch: { assertQueue: (arg0: string, arg1: { durable: boolean; }) => any; sendToQueue: (arg0: string, arg1: Buffer) => void; close: () => any; }) => {
                 const q = CREATED_QUEUE_TITLE;
@@ -29,11 +29,6 @@ const processTransaction = (msg: { content: { toString: () => any; }; }) => {
                     // so we'll ignore it.
                     ch.sendToQueue(q, Buffer.from(JSON.stringify(game)));
                     console.log(` [${CREATED_QUEUE_TITLE}] Sent '%s'`, JSON.stringify(game));
-
-                    // Attente de notifier
-
-
-
                     return ch.close();
                 });
             }).finally(() => { conn.close(); });
