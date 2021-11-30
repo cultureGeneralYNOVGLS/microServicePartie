@@ -9,7 +9,7 @@ import { ObjectID } from 'bson';
 
 
 export class GameDAO {
-    
+
     db: mongoDB.Db
     mongoUtils = new MongoUtils();
     collectionCategory = 'category';
@@ -41,7 +41,7 @@ export class GameDAO {
         return games[0];
     }
     async getByUserId(idUser: string): Promise<GameModel[]> {
-        const games = (await this.db.collection(this.collectionGame).find({idUser:idUser}).sort({_id:-1}).toArray()) as GameModel[];
+        const games = (await this.db.collection(this.collectionGame).find({idUser}).sort({_id:-1}).toArray()) as GameModel[];
         return games;
     }
     async getByUserCategory(idCategory: ObjectID): Promise<GameModel[]> {

@@ -13,7 +13,7 @@ import gameRouter from './routes/game.router';
 const app = express();
 const port = 7510; // default port to listen
 const dotenv = require('dotenv')
-var cors = require('cors')
+const cors = require('cors')
 
 
 dotenv.config()
@@ -22,7 +22,7 @@ dotenv.config()
 app.use(express.json())
 app.use(cors())
 
-app.use('/agent/partie',agentPartie)
+app.use('/agent/game',agentPartie)
 app.use('/category',categorieRouter)
 app.use('/game',gameRouter)
 

@@ -15,13 +15,13 @@ export class GameService {
     private categoriesDAO: CategoryDAO = new CategoryDAO()
     private checkForValidMongoDbID = new RegExp("^[0-9a-fA-F]{24}$");
 
-    async createUser(idUser: string, difficulty: number, numberQuestions: number, idCategory: string,name:string): Promise<GameModel|any> {
+    async createGame(idUser: string, difficulty: number, numberQuestions: number, idCategory: string,name:string, _id: mongoDB.ObjectId = new mongoDB.ObjectId()): Promise<GameModel|any> {
 
 
         if (this.validCreateBody(idUser, difficulty, numberQuestions, idCategory)) {
 
             if (this.checkForValidMongoDbID.test(idCategory)) {
-                let idCategoryObjectID = new ObjectID(idCategory);
+                const idCategoryObjectID = new ObjectID(idCategory);
 
                 let questions: QuestionModel[] = [];
 
@@ -29,17 +29,17 @@ export class GameService {
                 questions = await this.categoriesDAO.getQuestionsByIdCategory(idCategoryObjectID, numberQuestions)
 
 
-                let game: GameModel = {
-                    _id: new mongoDB.ObjectId(),
-                    idUser: idUser,
+                const game: GameModel = {
+                    _id,
+                    idUser,
                     name:name || faker.lorem.word(),
                     category: categorie,
-                    difficulty: difficulty,
+                    difficulty,
                     progressionQuestions: 1,
-                    numberQuestions: numberQuestions,
+                    numberQuestions,
                     score: 0,
                     idQuestionProgression: questions[0]._id,
-                    questions: questions,
+                    questions,
                     answer: [],
                     status: "not started"
                 }
@@ -65,7 +65,7 @@ export class GameService {
     async getGame(gameID: string): Promise<GameModel | any> {
 
         if (this.checkForValidMongoDbID.test(gameID)) {
-            let game: GameModel = await this.gameDAO.getById(new ObjectID(gameID));
+            const game: GameModel = await this.gameDAO.getById(new ObjectID(gameID));
 
             if (game.progressionQuestions === null) {
                 return game;
@@ -81,12 +81,12 @@ export class GameService {
     }
 
     async getGamesOfUser(idUser: string): Promise<GameModel[]> {
-        let game: GameModel[] = await this.gameDAO.getByUserId(idUser);
+        const game: GameModel[] = await this.gameDAO.getByUserId(idUser);
         return game;
     }
     async getGamesOfCategory(idCategory: string): Promise<GameModel[]> {
         if (this.checkForValidMongoDbID.test(idCategory)) {
-            let game: GameModel[] = await this.gameDAO.getByUserCategory(new ObjectID(idCategory));
+            const game: GameModel[] = await this.gameDAO.getByUserCategory(new ObjectID(idCategory));
             return game;
         }
         else {
@@ -96,7 +96,7 @@ export class GameService {
     async playGame(gameID: string, answer: any): Promise<GameModel | any> {
 
         if (this.checkForValidMongoDbID.test(gameID)) {
-            let game = await this.gameDAO.getById(new ObjectID(gameID));
+            const game = await this.gameDAO.getById(new ObjectID(gameID));
 
             if (game.progressionQuestions === null) {
                 return game;
@@ -139,7 +139,7 @@ export class GameService {
     async deleteGame(gameID: string) : Promise<number> {
 
         if (this.checkForValidMongoDbID.test(gameID)) {
-            let game = await this.gameDAO.getById(new ObjectID(gameID));
+            const game = await this.gameDAO.getById(new ObjectID(gameID));
             if (game) {
                 this.gameDAO.delete(game);
                 return 200;

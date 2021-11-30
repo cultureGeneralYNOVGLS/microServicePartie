@@ -8,7 +8,7 @@ const userToken = require('../middleware/userToken.middleware');
 const categorieRouter = Router();
 const categorieService = new CategoryService();
 
-categorieRouter.get('/',userToken, (request, response) => {
+categorieRouter.get('/', (request, response) => {
     categorieService.getAll().then((categories : CategoryModel[]) => {
         response.json(categories)
     })
