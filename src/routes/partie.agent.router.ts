@@ -1,6 +1,9 @@
 import { Router } from 'express';
 import { PartieService } from '../services/partie.agent.services';
 
+const agentPartie = Router();
+
+/*
 const notifier = require('../notifier/partie.notifier')
 notifier();
 
@@ -11,5 +14,6 @@ agentPartie.get('/', (request, response) => {
     agentService.publish();
     response.json({ok:'ok'})
 })
+*/
 
 export default agentPartie;
