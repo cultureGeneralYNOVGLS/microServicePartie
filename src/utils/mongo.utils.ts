@@ -3,7 +3,7 @@ import * as mongoDB from "mongodb";
 
 let mongodbClient: any;
 let db: mongoDB.Db;
-const URI_MONGO: string = "mongodb://127.0.0.1:27017"
+const URI_MONGO: string = "mongodb://micro-service-game-mongodb:27017"
 const DB_MONGO: string = "YNOVGLS"
 
 export class MongoUtils {
