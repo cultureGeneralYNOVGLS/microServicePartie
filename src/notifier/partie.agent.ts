@@ -18,7 +18,7 @@ const processTransaction = (msg: { content: { toString: () => any; }; }) => {
 
 const start = () => {
     console.log('Lancement Notifier Parti')
-    amqplib.connect('amqp://localhost').then((conn: { close: () => void; createChannel: () => Promise<any>; }) => {
+    amqplib.connect('amqp://rabbitmq').then((conn: { close: () => void; createChannel: () => Promise<any>; }) => {
         process.once('SIGINT', () => { conn.close(); });
         return conn.createChannel().then((ch) => {
 
