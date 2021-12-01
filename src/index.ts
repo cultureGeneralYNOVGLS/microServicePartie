@@ -11,7 +11,7 @@ import categorieRouter from './routes/category.router';
 import gameRouter from './routes/game.router';
 
 const app = express();
-const port = 7510; // default port to listen
+const port = 3000; // default port to listen
 const dotenv = require('dotenv')
 const cors = require('cors')
 
@@ -22,15 +22,9 @@ dotenv.config()
 app.use(express.json())
 app.use(cors())
 
-app.use('/agent/partie',agentPartie)
+app.use('/agent/game',agentPartie)
 app.use('/category',categorieRouter)
 app.use('/game',gameRouter)
-
-
-
-app.get('/getkey', async (request, response) => {
-    response.sendStatus(200);
-})
 
 /*
 

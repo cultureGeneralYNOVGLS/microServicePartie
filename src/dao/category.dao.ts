@@ -33,8 +33,8 @@ export class CategoryDAO {
         return games[0];
     }
     async getQuestionsByIdCategory(idCategory: mongoDB.ObjectId, numberQuestions : number): Promise<QuestionModel[]> {
-        const questions = (await this.db.collection(this.collectionQuestion).find({idCategory:idCategory}).toArray()) as QuestionModel[];
-        let questionsShuffle = this.shuffleArray(questions);
+        const questions = (await this.db.collection(this.collectionQuestion).find({idCategory}).toArray()) as QuestionModel[];
+        const questionsShuffle = this.shuffleArray(questions);
         const slicedQuestions = questionsShuffle.slice(0, numberQuestions);
 
         return slicedQuestions;
@@ -46,7 +46,7 @@ export class CategoryDAO {
 
         for (let i = 0; i < 10; i++) {
 
-            let category: CategoryModel = {
+            const category: CategoryModel = {
                 name: faker.lorem.word(),
                 _id: new mongoDB.ObjectId()
             };
@@ -54,11 +54,11 @@ export class CategoryDAO {
 
             for (let y = 0; y < 20; y++) {
 
-                let goodAnswer = faker.lorem.word();
+                const goodAnswer = faker.lorem.word();
 
-                let question: QuestionModel = {
+                const question: QuestionModel = {
                     _id: new mongoDB.ObjectId(),
-                    goodAnswer: goodAnswer,
+                    goodAnswer,
                     answers: this.shuffleArray([goodAnswer, faker.lorem.word(), faker.lorem.word(), faker.lorem.word()]),
                     difficulties: [1, 2],
                     question: faker.lorem.sentence(),
