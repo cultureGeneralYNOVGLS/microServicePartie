@@ -10,8 +10,8 @@ const gameService = new GameService();
 const processTransaction = (msg: { content: { toString: () => any; }; }) => {
     console.log(` [${MAIN_QUEUE_GAME}] Received '%s'`, msg.content.toString());
 
-    let game = JSON.parse(msg.content.toString());
-    
+    const game = JSON.parse(msg.content.toString());
+
     gameService.playGame(game.gameID,game.answer);
 
 }

@@ -3,17 +3,18 @@ import { CategoryModel } from '../models/category.model';
 import { CategoryService } from '../services/category.services';
 
 const userToken = require('../middleware/userToken.middleware');
+const getKeyUser = require('../middleware/microserviceUserGetKey.middleware');
 
 
 const categorieRouter = Router();
 const categorieService = new CategoryService();
 
-categorieRouter.get('/',userToken, (request, response) => {
+categorieRouter.get('/',getKeyUser,userToken, (request, response) => {
     categorieService.getAll().then((categories : CategoryModel[]) => {
         response.json(categories)
     })
 })
-categorieRouter.get('/setup',userToken, (request, response) => {
+categorieRouter.get('/setup',getKeyUser,userToken, (request, response) => {
     categorieService.setupCat();
 })
 

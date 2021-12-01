@@ -11,7 +11,7 @@ module.exports = (req: any, res: any, next: any) => {
     try {
         const token = req.headers.authorization.split(' ')[1];
 
-        fetch(`http://localhost:7512/api/user/auth`, {
+        fetch(`http://micro-service-user:3000/api/user/auth`, {
             method: "POST",
             body: JSON.stringify({ token }),
             headers: {

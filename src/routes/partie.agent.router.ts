@@ -3,6 +3,7 @@ import { PartieService } from '../services/partie.emitter.services';
 
 
 const userToken = require('../middleware/userToken.middleware');
+const getKeyUser = require('../middleware/microserviceUserGetKey.middleware');
 
 const notifier = require('../notifier/partie.agent')
 notifier();
@@ -15,7 +16,7 @@ agentPartie.get('/', (request, response) => {
     response.json({ok:'ok'})
 })
 
-agentPartie.post('/:gameID',userToken, async (request, response) => {
+agentPartie.patch('/:gameID',getKeyUser,userToken, async (request, response) => {
     agentService.sendAnswer(request.params.gameID, request.body.answer);
     response.sendStatus(200);
 })
