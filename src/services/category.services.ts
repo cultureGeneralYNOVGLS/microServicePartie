@@ -4,7 +4,7 @@ import { CategoryDAO } from "../dao/category.dao";
 const amqplib = require("amqplib");
 
 export class CategoryService {
-    
+
 
     private categoryDAO: CategoryDAO = new CategoryDAO()
 

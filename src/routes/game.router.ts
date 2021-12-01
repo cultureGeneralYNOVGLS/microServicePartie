@@ -13,7 +13,7 @@ gameRouter.get('/:gameID',userToken, async (request, response) => {
 })
 
 gameRouter.post('/',userToken, (request, response) => {
-    let body: { idUser: string, difficulty: number, numberQuestions: number, idCategory: string, name: string } = {
+    const body: { idUser: string, difficulty: number, numberQuestions: number, idCategory: string, name: string } = {
         ...request.body
     };
     gameService.createUser(body.idUser, body.difficulty, body.numberQuestions, body.idCategory, body.name).then((game: GameModel) => {

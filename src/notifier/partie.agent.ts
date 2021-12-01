@@ -1,11 +1,19 @@
+import { GameService } from "../services/game.services";
+
 const amqplib = require("amqplib");
 
-const MAIL_QUEUE_TITLE = "transactions";
+const MAIN_QUEUE_GAME = "playGame";
 
 
+const gameService = new GameService();
 
 const processTransaction = (msg: { content: { toString: () => any; }; }) => {
-    console.log(` [${MAIL_QUEUE_TITLE}] Received '%s'`, msg.content.toString());
+    console.log(` [${MAIN_QUEUE_GAME}] Received '%s'`, msg.content.toString());
+
+    let game = JSON.parse(msg.content.toString());
+    
+    gameService.playGame(game.gameID,game.answer);
+
 }
 
 const start = () => {
@@ -14,14 +22,14 @@ const start = () => {
         process.once('SIGINT', () => { conn.close(); });
         return conn.createChannel().then((ch) => {
 
-            var ok = ch.assertQueue(MAIL_QUEUE_TITLE, { durable: false });
+            let ok = ch.assertQueue(MAIN_QUEUE_GAME, { durable: false });
 
             ok = ok.then((_qok: any) => {
-                return ch.consume(MAIL_QUEUE_TITLE, processTransaction, { noAck: true });
+                return ch.consume(MAIN_QUEUE_GAME, processTransaction, { noAck: true });
             });
 
             return ok.then((_consumeOk: any) => {
-                console.log(` [${MAIL_QUEUE_TITLE}] Waiting for messages. To exit press CTRL+C`);
+                console.log(` [${MAIN_QUEUE_GAME}] Waiting for messages. To exit press CTRL+C`);
             });
         });
     }).catch(console.warn);
