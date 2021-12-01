@@ -5,7 +5,7 @@ export class PartieService {
     public publish() {
         amqplib.connect('amqp://localhost').then((conn: { createChannel: () => Promise<any>; close: () => void; }) => {
             return conn.createChannel().then((ch: { assertQueue: (arg0: string, arg1: { durable: boolean; }) => any; sendToQueue: (arg0: string, arg1: Buffer) => void; close: () => any; }) => {
-                var q = 'transactions';
+                let  q = 'transactions';
                 let isCorrupted = Math.random() < 0.1;
                 let accountIndex = Math.floor(Math.random() * 99)
                 let transaction = {
@@ -15,7 +15,7 @@ export class PartieService {
                     amount : isCorrupted ? -1 : Math.floor(Math.random() * (10000 +2 +1)) -2
                 }
 
-                var ok = ch.assertQueue(q, { durable: false });
+                let ok = ch.assertQueue(q, { durable: false });
 
                 return ok.then((_qok: any)  =>{
                     // NB: `sentToQueue` and `publish` both return a boolean

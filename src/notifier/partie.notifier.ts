@@ -14,7 +14,7 @@ const start = () => {
         process.once('SIGINT', () => { conn.close(); });
         return conn.createChannel().then((ch) => {
 
-            var ok = ch.assertQueue(MAIL_QUEUE_TITLE, { durable: false });
+            let  ok = ch.assertQueue(MAIL_QUEUE_TITLE, { durable: false });
 
             ok = ok.then((_qok: any) => {
                 return ch.consume(MAIL_QUEUE_TITLE, processTransaction, { noAck: true });
