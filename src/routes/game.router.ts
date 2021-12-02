@@ -27,7 +27,7 @@ gameRouter.get('/getkey', async (request, response) => {
  *     description: Retrieve a game of user
  */
 gameRouter.get('/:userID',getKeyUser,userToken, async (request, response) => {
-    response.json(await gameService.getGamesOfUser(request.params.idUser));
+    response.json(await gameService.getGamesOfUser(request.params.userID));
 })
 
 /**
@@ -38,7 +38,7 @@ gameRouter.get('/:userID',getKeyUser,userToken, async (request, response) => {
  *     description: Retrieve a game of category
  */
 gameRouter.get('/:categoryID',getKeyUser,userToken, async (request, response) => {
-    response.json(await gameService.getGamesOfCategory(request.params.idCategory));
+    response.json(await gameService.getGamesOfCategory(request.params.categoryID));
 })
 
 /**
