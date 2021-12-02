@@ -21,36 +21,36 @@ gameRouter.get('/getkey', async (request, response) => {
 
 /**
  * @openapi
- * /api/game/:userID:
- *   get:
- *     summary: Retrieve a game of user
- *     description: Retrieve a game of user
- */
-gameRouter.get('/:userID',getKeyUser,userToken, async (request, response) => {
-    response.json(await gameService.getGamesOfUser(request.params.userID));
-})
-
-/**
- * @openapi
- * /api/game/:categoryID:
- *   get:
- *     summary: Retrieve a game of category
- *     description: Retrieve a game of category
- */
-gameRouter.get('/:categoryID',getKeyUser,userToken, async (request, response) => {
-    response.json(await gameService.getGamesOfCategory(request.params.categoryID));
-})
-
-/**
- * @openapi
  * /api/game/:gameID:
  *   get:
  *     summary: Retrieve a game of game
  *     description: Retrieve a game of game
  */
-gameRouter.get('/:gameID',getKeyUser,userToken, async (request, response) => {
+ gameRouter.get('/:gameID',getKeyUser,userToken, async (request, response) => {
     console.log("GET GAME");
     response.json(await gameService.getGame(request.params.gameID));
+})
+
+/**
+ * @openapi
+ * /api/game/user/:userID:
+ *   get:
+ *     summary: Retrieve a game of user
+ *     description: Retrieve a game of user
+ */
+gameRouter.get('/user/:userID',getKeyUser,userToken, async (request, response) => {
+    response.json(await gameService.getGamesOfUser(request.params.userID));
+})
+
+/**
+ * @openapi
+ * /api/game/category/:categoryID:
+ *   get:
+ *     summary: Retrieve a game of category
+ *     description: Retrieve a game of category
+ */
+gameRouter.get('/category/:categoryID',getKeyUser,userToken, async (request, response) => {
+    response.json(await gameService.getGamesOfCategory(request.params.categoryID));
 })
 
 /**

@@ -18,7 +18,7 @@ app.use(cors())
 
 // API Routes
 app.use('/api/game', gameRouter)
-app.use('/api/game/category', categorieRouter)
+app.use('/api/category', categorieRouter)
 app.use('/api/game/agent', agentPartie)
 
 // start the Express server
