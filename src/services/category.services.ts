@@ -4,11 +4,11 @@ export class CategoryService {
     private categoryDAO: CategoryDAO = new CategoryDAO()
 
     async getAll() : Promise<CategoryModel[]> {
+        console.log(2, 'routes');
         return this.categoryDAO.getAll();
     }
 
     setupCat() {
-        console.log(2, 'routes');
         this.categoryDAO.setupCategories();
     }
 

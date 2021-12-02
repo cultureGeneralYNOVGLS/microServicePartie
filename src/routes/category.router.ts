@@ -16,7 +16,9 @@ const categorieService = new CategoryService();
  *     description: Retrieve a list of category
  */
 categorieRouter.get('/',getKeyUser, userToken, (request, response) => {
+    console.log(1, 'route');
     categorieService.getAll().then((categories : CategoryModel[]) => {
+        console.log(6, categories);
         response.json(categories)
     })
 })
@@ -29,7 +31,6 @@ categorieRouter.get('/',getKeyUser, userToken, (request, response) => {
  *     description: Create 10 categories in category collection
  */
 categorieRouter.post('/setup', (request, response) => {
-    console.log(1, 'route');
     categorieService.setupCat();
 })
 
