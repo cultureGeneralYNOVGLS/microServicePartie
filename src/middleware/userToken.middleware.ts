@@ -2,7 +2,7 @@ module.exports = (req: any, res: any, next: any) => {
     console.log("verif Token Partie")
     const fetch = require('node-fetch');
     try {
-        const token = req.headers.authorization.split(' ')[1];
+        const token = req.headers.authorization.split(' ')[1] || req.headers["x-access-token"];
 
         fetch(`http://micro-service-user:3000/api/user/auth`, {
             method: "POST",

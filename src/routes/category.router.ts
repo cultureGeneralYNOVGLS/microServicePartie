@@ -15,7 +15,7 @@ const categorieService = new CategoryService();
  *     summary: Retrieve a list of category
  *     description: Retrieve a list of category
  */
-categorieRouter.get('/',getKeyUser,userToken, (request, response) => {
+categorieRouter.get('/',getKeyUser, userToken, (request, response) => {
     categorieService.getAll().then((categories : CategoryModel[]) => {
         response.json(categories)
     })
