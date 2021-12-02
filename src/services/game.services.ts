@@ -16,8 +16,6 @@ export class GameService {
     private checkForValidMongoDbID = new RegExp("^[0-9a-fA-F]{24}$");
 
     async createGame(idUser: string, difficulty: number, numberQuestions: number, idCategory: string,name:string): Promise<GameModel|any> {
-
-
         if (this.validCreateBody(idUser, difficulty, numberQuestions, idCategory)) {
 
             if (this.checkForValidMongoDbID.test(idCategory)) {
@@ -27,7 +25,6 @@ export class GameService {
 
                 const categorie: CategoryModel = await this.categoriesDAO.getByID(idCategoryObjectID);
                 questions = await this.categoriesDAO.getQuestionsByIdCategory(idCategoryObjectID, numberQuestions)
-
 
                 const game: GameModel = {
                     _id: new mongoDB.ObjectId(),
@@ -43,7 +40,6 @@ export class GameService {
                     answer: [],
                     status: "not started"
                 }
-
                 if (this.validGame(game)) {
                     this.gameDAO.create(game);
                     return game;
@@ -55,7 +51,6 @@ export class GameService {
             else {
                 return {error:'idCategory Not Valid'};
             }
-
         }
         else {
             return {error:'Body Not Valid'};
@@ -73,7 +68,6 @@ export class GameService {
             else {
                 return game;
             }
-
         }
         else {
             return null;
@@ -84,6 +78,7 @@ export class GameService {
         const game: GameModel[] = await this.gameDAO.getByUserId(idUser);
         return game;
     }
+
     async getGamesOfCategory(idCategory: string): Promise<GameModel[]> {
         if (this.checkForValidMongoDbID.test(idCategory)) {
             const game: GameModel[] = await this.gameDAO.getByUserCategory(new ObjectID(idCategory));
@@ -93,8 +88,8 @@ export class GameService {
             return null;
         }
     }
-    async playGame(gameID: string, answer: any): Promise<GameModel | any> {
 
+    async playGame(gameID: string, answer: any): Promise<GameModel | any> {
         if (this.checkForValidMongoDbID.test(gameID)) {
             const game = await this.gameDAO.getById(new ObjectID(gameID));
 
@@ -110,18 +105,15 @@ export class GameService {
                     }
                     game.progressionQuestions++;
                     game.answer.push(answer);
-
                     if (game.progressionQuestions <= game.numberQuestions) {
                         game.idQuestionProgression = game.questions[game.progressionQuestions - 1]._id;
                         game.status = 'in progress';
-
                         return this.gameDAO.update(game);
                     }
                     else {
                         game.idQuestionProgression = null;
                         game.progressionQuestions = null;
                         game.status = 'finish';
-
                         return this.gameDAO.update(game);
                     }
                 }
@@ -129,17 +121,15 @@ export class GameService {
                     return null;
                 }
             }
-
-
         }
         else {
             return null;
         }
     }
     async deleteGame(gameID: string) : Promise<number> {
-
         if (this.checkForValidMongoDbID.test(gameID)) {
             const game = await this.gameDAO.getById(new ObjectID(gameID));
+            
             if (game) {
                 this.gameDAO.delete(game);
                 return 200;
@@ -160,12 +150,7 @@ export class GameService {
             return false;
         }
     }
-
     validGame(game: GameModel) {
         return game && game.difficulty && game.category && game.idQuestionProgression && game.idUser && game.numberQuestions && game.progressionQuestions && game.questions
     }
-
-
-
-
 }

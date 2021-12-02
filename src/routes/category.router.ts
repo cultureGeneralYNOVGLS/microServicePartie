@@ -5,16 +5,30 @@ import { CategoryService } from '../services/category.services';
 const userToken = require('../middleware/userToken.middleware');
 const getKeyUser = require('../middleware/microserviceUserGetKey.middleware');
 
-
 const categorieRouter = Router();
 const categorieService = new CategoryService();
 
+/**
+ * @openapi
+ * /api/game/category:
+ *   get:
+ *     summary: Retrieve a list of category
+ *     description: Retrieve a list of category
+ */
 categorieRouter.get('/',getKeyUser,userToken, (request, response) => {
     categorieService.getAll().then((categories : CategoryModel[]) => {
         response.json(categories)
     })
 })
-categorieRouter.get('/setup', (request, response) => {
+
+/**
+ * @openapi
+ * /api/game/category/setup:
+ *   post:
+ *     summary: Create 10 categories in category collection
+ *     description: Create 10 categories in category collection
+ */
+categorieRouter.post('/setup', (request, response) => {
     categorieService.setupCat();
 })
 

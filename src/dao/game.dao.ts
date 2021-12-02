@@ -1,15 +1,11 @@
 
 import { GameModel } from '../models/game.model';
-import { CategoryModel } from '../models/category.model';
-import { QuestionModel } from '../models/question.model';
 
 import { MongoUtils } from '../utils/mongo.utils';
 import * as mongoDB from "mongodb";
 import { ObjectID } from 'bson';
 
-
 export class GameDAO {
-
     db: mongoDB.Db
     mongoUtils = new MongoUtils();
     collectionCategory = 'category';
@@ -28,10 +24,12 @@ export class GameDAO {
         this.db.collection(this.collectionGame).insertOne(game);
         return game;
     }
+
     update(game: GameModel) {
         this.db.collection(this.collectionGame).updateOne({_id:game._id},{$set:game});
         return game;
     }
+
     delete(game: GameModel) {
         this.db.collection(this.collectionGame).deleteOne({_id:game._id});
     }
@@ -40,14 +38,14 @@ export class GameDAO {
         const games = (await this.db.collection(this.collectionGame).find({_id:gameID}).toArray()) as GameModel[];
         return games[0];
     }
+
     async getByUserId(idUser: string): Promise<GameModel[]> {
         const games = (await this.db.collection(this.collectionGame).find({idUser}).sort({_id:-1}).toArray()) as GameModel[];
         return games;
     }
+
     async getByUserCategory(idCategory: ObjectID): Promise<GameModel[]> {
         const games = (await this.db.collection(this.collectionGame).find({"category._id":idCategory}).toArray()) as GameModel[];
         return games;
     }
-
-
 }

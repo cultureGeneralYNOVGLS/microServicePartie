@@ -35,5 +35,4 @@ export class MongoUtils {
             mongodbClient.close();
         }
     }
-
 }

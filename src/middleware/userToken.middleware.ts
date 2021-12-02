@@ -1,11 +1,4 @@
 module.exports = (req: any, res: any, next: any) => {
-    /*if (req.userConnected.roles.includes('administrator')) {
-        next();
-    } else {
-        res.status(401).json({
-            error: "You haven't authorization to access"
-        });
-    }*/
     console.log("verif Token Partie")
     const fetch = require('node-fetch');
     try {

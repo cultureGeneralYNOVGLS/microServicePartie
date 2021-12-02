@@ -1,5 +1,4 @@
 
-import { GameModel } from '../models/game.model';
 import { CategoryModel } from '../models/category.model';
 import { QuestionModel } from '../models/question.model';
 
@@ -7,14 +6,12 @@ import { MongoUtils } from '../utils/mongo.utils';
 import * as mongoDB from "mongodb";
 const faker = require('faker');
 
-
 export class CategoryDAO {
     db: mongoDB.Db
     mongoUtils = new MongoUtils();
     collectionCategory = 'category';
     collectionQuestion = 'question';
     defaultCategories: string[] = []
-
 
     constructor() {
         this.mongoUtils.dbConnect().then((database: mongoDB.Db) => {
@@ -28,34 +25,29 @@ export class CategoryDAO {
         const categories = (await this.db.collection(this.collectionCategory).find({}).toArray()) as CategoryModel[];
         return categories;
     }
+
     async getByID(idCategoryObjectID: mongoDB.ObjectId): Promise<CategoryModel> {
         const games = (await this.db.collection(this.collectionCategory).find({_id:idCategoryObjectID}).toArray()) as CategoryModel[];
         return games[0];
     }
+
     async getQuestionsByIdCategory(idCategory: mongoDB.ObjectId, numberQuestions : number): Promise<QuestionModel[]> {
         const questions = (await this.db.collection(this.collectionQuestion).find({idCategory}).toArray()) as QuestionModel[];
         const questionsShuffle = this.shuffleArray(questions);
         const slicedQuestions = questionsShuffle.slice(0, numberQuestions);
-
         return slicedQuestions;
     }
 
-
     async setupCategories() {
         await this.db.collection(this.collectionCategory).deleteMany({});
-
         for (let i = 0; i < 10; i++) {
-
             const category: CategoryModel = {
                 name: faker.lorem.word(),
                 _id: new mongoDB.ObjectId()
             };
             this.db.collection(this.collectionCategory).insertOne(category);
-
             for (let y = 0; y < 20; y++) {
-
                 const goodAnswer = faker.lorem.word();
-
                 const question: QuestionModel = {
                     _id: new mongoDB.ObjectId(),
                     goodAnswer,
@@ -64,13 +56,10 @@ export class CategoryDAO {
                     question: faker.lorem.sentence(),
                     idCategory: category._id
                 };
-
                 this.db.collection(this.collectionQuestion).insertOne(question);
             }
         }
-
     }
-
 
     shuffleArray(arr: any[]): any[] {
         return Array(arr.length).fill(null)

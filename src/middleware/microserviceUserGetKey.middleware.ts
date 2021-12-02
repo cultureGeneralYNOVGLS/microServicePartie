@@ -1,12 +1,9 @@
 module.exports = (req: any, res: any, next: any) => {
-    
-    
     const fetch = require('node-fetch');
+
     fetch("http://micro-service-user:3000/api/user/getkey", {
         method: "GET"
-    })
-    .then((fetc:any) => {
-        console.log(fetc.status);
+    }).then((fetc:any) => {
         if (fetc.status === 404 || fetc.status === 500) {
             res.status(401).json({
                 error: "Data is not good"
