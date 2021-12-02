@@ -29,6 +29,7 @@ categorieRouter.get('/',getKeyUser, userToken, (request, response) => {
  *     description: Create 10 categories in category collection
  */
 categorieRouter.post('/setup', (request, response) => {
+    console.log(1, 'route');
     categorieService.setupCat();
 })
 

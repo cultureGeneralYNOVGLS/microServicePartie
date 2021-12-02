@@ -40,11 +40,14 @@ export class CategoryDAO {
 
     async setupCategories() {
         await this.db.collection(this.collectionCategory).deleteMany({});
+        console.log(3, 'start');
+        
         for (let i = 0; i < 10; i++) {
             const category: CategoryModel = {
                 name: faker.lorem.word(),
                 _id: new mongoDB.ObjectId()
             };
+            console.log(4, category);
             this.db.collection(this.collectionCategory).insertOne(category);
             for (let y = 0; y < 20; y++) {
                 const goodAnswer = faker.lorem.word();
@@ -56,9 +59,13 @@ export class CategoryDAO {
                     question: faker.lorem.sentence(),
                     idCategory: category._id
                 };
+                console.log(5, goodAnswer);
+                console.log(6, question);
                 this.db.collection(this.collectionQuestion).insertOne(question);
+                console.log(7, question);
             }
         }
+        console.log(8, 'finish');
     }
 
     shuffleArray(arr: any[]): any[] {

@@ -8,6 +8,7 @@ export class CategoryService {
     }
 
     setupCat() {
+        console.log(2, 'routes');
         this.categoryDAO.setupCategories();
     }
 
