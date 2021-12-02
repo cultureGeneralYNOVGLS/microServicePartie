@@ -1,11 +1,4 @@
 import express from 'express';
-/*
-import usersRouter from './routes/users.router';
-import loginRouter from './routes/login.router';
-import booksRouter from './routes/books.router';
-import commentsRouter from './routes/comments.router';
-import cartsRouter from './routes/carts.router';
-*/
 import agentPartie from './routes/partie.agent.router';
 import categorieRouter from './routes/category.router';
 import gameRouter from './routes/game.router';
@@ -22,19 +15,10 @@ dotenv.config()
 app.use(express.json())
 app.use(cors())
 
+// API Routes
 app.use('/agent/game',agentPartie)
 app.use('/category',categorieRouter)
 app.use('/game',gameRouter)
-
-/*
-
-app.use('/api/users', usersRouter)
-app.use('/api/login', loginRouter)
-app.use('/api/books', booksRouter)
-app.use('/api/comments', commentsRouter)
-app.use('/api/carts', cartsRouter)
-
-*/
 
 // start the Express server
 app.listen(port, () => {

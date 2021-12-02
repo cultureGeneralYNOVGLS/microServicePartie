@@ -22,7 +22,7 @@ gameRouter.post('/',getKeyUser,userToken, (request, response) => {
     const body: { idUser: string, difficulty: number, numberQuestions: number, idCategory: string, name: string } = {
         ...request.body
     };
-    gameService.createUser(body.idUser, body.difficulty, body.numberQuestions, body.idCategory, body.name).then((game: GameModel) => {
+    gameService.createGame(body.idUser, body.difficulty, body.numberQuestions, body.idCategory, body.name).then((game: GameModel) => {
         response.json(game)
     });
 })

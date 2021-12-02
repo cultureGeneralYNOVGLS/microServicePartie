@@ -15,7 +15,7 @@ export class GameService {
     private categoriesDAO: CategoryDAO = new CategoryDAO()
     private checkForValidMongoDbID = new RegExp("^[0-9a-fA-F]{24}$");
 
-    async createUser(idUser: string, difficulty: number, numberQuestions: number, idCategory: string,name:string): Promise<GameModel|any> {
+    async createGame(idUser: string, difficulty: number, numberQuestions: number, idCategory: string,name:string): Promise<GameModel|any> {
 
 
         if (this.validCreateBody(idUser, difficulty, numberQuestions, idCategory)) {

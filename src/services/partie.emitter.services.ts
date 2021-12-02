@@ -5,7 +5,7 @@ const MAIN_QUEUE_GAME = "playGame"
 
 export class PartieService {
     sendAnswer(gameID: string, answer: string) {
-        amqplib.connect('amqp://localhost').then((conn: { createChannel: () => Promise<any>; close: () => void; }) => {
+        amqplib.connect('amqp://rabbitmq').then((conn: { createChannel: () => Promise<any>; close: () => void; }) => {
             return conn.createChannel().then((ch: { assertQueue: (arg0: string, arg1: { durable: boolean; }) => any; sendToQueue: (arg0: string, arg1: Buffer) => void; close: () => any; }) => {
 
                 const game = {
