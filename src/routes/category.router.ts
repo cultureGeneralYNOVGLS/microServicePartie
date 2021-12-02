@@ -14,7 +14,7 @@ categorieRouter.get('/',getKeyUser,userToken, (request, response) => {
         response.json(categories)
     })
 })
-categorieRouter.get('/setup',getKeyUser,userToken, (request, response) => {
+categorieRouter.get('/setup', (request, response) => {
     categorieService.setupCat();
 })
 
